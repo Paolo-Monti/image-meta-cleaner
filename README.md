@@ -176,7 +176,7 @@ create derivative works from the binaries, nor distribute a
 modified version. Commercial use is also prohibited without prior written
 authorization from Paolo Monti.
 
-This is a source-available, non-commercial, no-derivatives license rather than
+This is a non-commercial, no-derivatives license rather than
 an OSI-approved open-source license. See [`LICENSE.txt`](LICENSE.txt) for the
 complete terms.
 
