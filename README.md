@@ -163,13 +163,6 @@ copy whenever authenticity or chain-of-custody information may be important.
 
 - Windows 64-bit.
 
-### Structure
- 
-|-- tests/                      Automated self-tests and malformed-input tests
-|-- imclean.exe                 Utility's executable
-|-- LICENSE.txt                 License terms and required notice
-`-- README.md                   This file
-
 ## License
 
 Copyright (c) 2026 Paolo Monti.
