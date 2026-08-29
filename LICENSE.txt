@@ -1,0 +1,74 @@
+IMClean Non-Commercial No-Derivatives License 1.0
+
+Copyright (c) 2026 Paolo Monti. All rights reserved.
+
+1. Permission to use
+
+Subject to the terms below, Paolo Monti (the "Licensor") grants you a limited,
+non-exclusive, non-transferable, royalty-free license to download, install, and
+run IMClean (the "Software") solely for personal, educational, academic,
+research, charitable, or other non-commercial purposes.
+
+2. Verbatim redistribution
+
+You may redistribute verbatim, unmodified copies of the Software as originally
+made available by the Licensor, provided that:
+
+  a. the redistribution is entirely non-commercial;
+  b. no fee, payment, advertising revenue, or other commercial benefit is
+     received in connection with the redistribution;
+  c. all original files, copyright notices, attribution, and this license are
+     included without alteration; and
+  d. you do not claim authorship, endorsement, or ownership of the Software.
+
+3. No modifications or derivative works
+
+You may not modify, alter, adapt, translate, patch, transform, or create
+derivative works based on any part of the Software. You may not distribute,
+publish, sublicense, or make available any modified version, fork, adaptation,
+or derivative work.
+
+Normal use of command-line options and processing image files with the Software
+does not constitute modification of the Software.
+
+4. No commercial use
+
+You may not use the Software, source code, binaries, or any part of them for any
+commercial purpose or commercial advantage. Prohibited commercial purposes
+include, without limitation, inclusion in a paid product or service, use while
+providing paid services, monetized distribution, resale, licensing for a fee,
+or use intended to support revenue-generating activity.
+
+Commercial use requires a separate written license from the Licensor.
+
+5. Ownership and notices
+
+The Software is licensed, not sold. The Licensor retains all ownership and
+intellectual-property rights in the Software. You may not remove or alter any
+copyright, attribution, trademark, authorship, or license notice.
+
+6. No additional rights
+
+No rights are granted except those expressly stated in this license. This
+license does not grant permission to sublicense the Software or transfer your
+license rights to another person or entity.
+
+7. Termination
+
+Your rights under this license terminate automatically if you breach any of its
+terms. Upon termination, you must stop using the Software and delete all copies
+in your possession or control, except where retention is required by law.
+
+8. Disclaimer of warranty and limitation of liability
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OR CONDITION OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING WARRANTIES OF MERCHANTABILITY, FITNESS FOR A
+PARTICULAR PURPOSE, TITLE, AND NON-INFRINGEMENT. TO THE MAXIMUM EXTENT PERMITTED
+BY LAW, THE LICENSOR WILL NOT BE LIABLE FOR ANY CLAIM, DATA LOSS, METADATA LOSS,
+LOSS OF PROVENANCE INFORMATION, OR OTHER DAMAGES ARISING FROM OR RELATED TO THE
+SOFTWARE OR ITS USE.
+
+9. Additional permission
+
+To request permission to modify the Software, create a derivative work, or use
+the Software commercially, obtain prior written authorization from Paolo Monti.
