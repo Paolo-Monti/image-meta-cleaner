@@ -33,9 +33,9 @@ does not constitute modification of the Software.
 
 4. No commercial use
 
-You may not use the Software, source code, binaries, or any part of them for any
-commercial purpose or commercial advantage. Prohibited commercial purposes
-include, without limitation, inclusion in a paid product or service, use while
+You may not use the Software or any part of it for any commercial purpose or
+commercial advantage. Prohibited commercial purposes include, without
+limitation, inclusion in a paid product or service, use while
 providing paid services, monetized distribution, resale, licensing for a fee,
 or use intended to support revenue-generating activity.
 
