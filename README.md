@@ -1,10 +1,12 @@
 # IMClean
 
-IMClean is a native 64-bit Windows command-line utility for detecting, reporting,
-and removing EXIF and embedded C2PA/JUMBF metadata from image files. 
-No external runtime libraries are required.
+IMClean is a native 64-bit Windows utility for detecting, reporting, and removing
+EXIF and embedded C2PA/JUMBF metadata from image files. It includes both an
+accessible graphical interface and a command-line interface. No external runtime
+libraries are required.
 
-The executable is named `imclean.exe`.
+The graphical executable is named `imclean-gui.exe`; the console executable is
+named `imclean.exe`. The two executables can be used independently.
 
 ## Features
 
@@ -13,7 +15,8 @@ The executable is named `imclean.exe`.
   file list before showing results.
 - Reports EXIF and embedded C2PA/JUMBF metadata in clear English text.
 - Removes EXIF only, C2PA/JUMBF only, or both metadata categories.
-- Provides a safe `--dry-run` mode that previews changes without writing files.
+- Provides a safe command-line `--dry-run` mode that previews changes without
+  writing files.
 - Optionally creates non-destructive backup copies before modification.
 - Writes an optional UTF-8 log file.
 - Detects image formats from their binary signatures instead of trusting file
@@ -24,6 +27,11 @@ The executable is named `imclean.exe`.
   while it is being processed.
 - Skips directory junctions and symbolic links during recursive scans to avoid
   cycles and unintended traversal outside the requested folder.
+- Provides a responsive Windows GUI based on owner-drawn controls, with a live
+  results table, image preview, metadata details, status badges, and progress.
+- Accepts files and folders through dialogs, drag and drop, or GUI command-line
+  arguments.
+- Exports GUI scan results as a UTF-8 text report.
 
 ## Supported image formats
 
@@ -38,6 +46,48 @@ Classic TIFF files with magic number 42 are supported. BigTIFF files with magic
 number 43 and 64-bit offsets are not currently supported.
 
 ## Usage
+
+### Graphical interface
+
+Start `imclean-gui.exe`, then use **Add Files** or **Add Folder**. Choose the
+required options and select one of the following actions:
+
+- **Scan** detects and reports metadata without changing images.
+- **Remove EXIF** removes EXIF metadata only.
+- **Remove C2PA** removes embedded C2PA/JUMBF metadata only.
+- **Remove All** removes both metadata categories.
+
+The **Recursive** option includes matching files in subfolders. **Create backup**
+stores a safe copy before each modification. The **Pattern** field accepts
+multiple file masks separated by semicolons. The graphical interface always
+asks for confirmation before a removal operation; dry-run mode remains
+available in the command-line interface for scripts and automation.
+
+Use the **View selected inputs** link in the upper-right corner to inspect the
+complete list of queued files and folders, remove selected entries, or clear
+the input list. Results can be sorted by clicking a column header; EXIF and
+C2PA/JUMBF sorting shows detected metadata first on the initial click. Sorting
+is temporarily suspended while an operation is running and is applied once
+when the operation finishes, avoiding unnecessary redraws. Hover over a
+truncated path in the metadata panel to see the complete path in a tooltip.
+When EXIF or C2PA/JUMBF metadata is detected, hover over its blue label to see
+the details tooltip, then click the label to open a scrollable dialog containing
+the complete file path and every available parsed metadata detail.
+
+You can drag files or folders directly onto the window. You can also start the
+GUI with one or more paths; those inputs are added and scanned automatically:
+
+```bat
+imclean-gui.exe "C:\Photos"
+imclean-gui.exe photo.jpg scan.png
+```
+
+Use **Export Report** to save the current results as a UTF-8 text file. Selecting
+a result displays its preview, file information, parsed EXIF fields, and embedded
+C2PA/JUMBF details. IMClean detects embedded provenance data but does not verify
+C2PA digital signatures.
+
+### Command-line interface
 
 ```text
 imclean [command] [options] <file-or-folder> [...]
@@ -77,10 +127,10 @@ imclean photo.jpg
 imclean scan photo.jpg
 ```
 
-Scan every supported image in a folder and its subfolders (wildcards ? and * are supported):
+Scan every supported image in a folder and its subfolders:
 
 ```bat
-imclean "C:\Photos\pic*" --recursive
+imclean "C:\Photos" --recursive
 ```
 
 Preview EXIF removal without changing the PNG file:
@@ -162,6 +212,18 @@ copy whenever authenticity or chain-of-custody information may be important.
 ### Requirements
 
 - Windows 64-bit.
+- The release binaries require no external runtime libraries.
+
+## Release verification
+
+Published releases include `SHA256SUMS.txt`. Verify a downloaded executable
+with PowerShell before running it:
+
+```powershell
+Get-FileHash .\imclean-gui.exe -Algorithm SHA256
+```
+
+Compare the resulting value with the matching line in `SHA256SUMS.txt`.
 
 ## License
 
@@ -176,9 +238,7 @@ create derivative works from the binaries, nor distribute a
 modified version. Commercial use is also prohibited without prior written
 authorization from Paolo Monti.
 
-This is a non-commercial, no-derivatives license rather than
-an OSI-approved open-source license. See [`LICENSE.txt`](LICENSE.txt) for the
-complete terms.
+See [`LICENSE.txt`](LICENSE.txt) for the complete terms.
 
 ## Disclaimer
 
