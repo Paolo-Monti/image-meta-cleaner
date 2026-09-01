@@ -21,8 +21,8 @@ named `imclean.exe`. The two executables can be used independently.
 - Writes an optional UTF-8 log file.
 - Detects image formats from their binary signatures instead of trusting file
   extensions alone.
-- Avoids re-encoding image data and preserves pixel content whenever metadata is
-  removed.
+- Removes container metadata without rendering or recompressing image content;
+  GIF animation frames and unrelated SVG elements remain untouched.
 - Uses atomic file replacement and rejects a write if the original file changes
   while it is being processed.
 - Skips directory junctions and symbolic links during recursive scans to avoid
@@ -41,9 +41,26 @@ named `imclean.exe`. The two executables can be used independently.
 | PNG | `.png` | Detection, report, and removal | Detection, report, and removal of embedded C2PA/JUMBF chunks |
 | WebP | `.webp` | Detection, report, and removal | Detection, report, and removal of embedded RIFF chunks |
 | TIFF | `.tif`, `.tiff` | Detection, report, and removal for classic little-endian and big-endian TIFF | Detection, report, and removal of the embedded C2PA Manifest Store tag |
+| GIF | `.gif` | Not applicable | Detection, report, and removal of the C2PA Application Extension while preserving animation data and other extensions |
+| SVG | `.svg` | Not applicable | Detection, report, and removal of the standard Base64 `c2pa:manifest` element while preserving unrelated XML content |
+| DNG | `.dng` | Detection, report, and removal from classic TIFF-based DNG files | Detection, report, and removal of C2PA tag 52545 |
+| HEIF/HEIC | `.heif`, `.heic` | Detection, report, and secure payload clearing for file-offset EXIF items | Detection, report, and neutralization of C2PA BMFF `uuid` boxes |
+| AVIF | `.avif` | Detection, report, and secure payload clearing for file-offset EXIF items | Detection, report, and neutralization of C2PA BMFF `uuid` boxes |
+| JPEG XL | `.jxl` | Detection, report, and removal of `Exif` boxes, including Brotli-wrapped boxes | Detection, report, and removal of standard C2PA `jumb` boxes |
 
 Classic TIFF files with magic number 42 are supported. BigTIFF files with magic
 number 43 and 64-bit offsets are not currently supported.
+
+SVG processing supports UTF-8 and UTF-16 documents, with or without the
+corresponding byte-order mark. IMClean recognizes embedded C2PA data in the
+standard `c2pa:manifest` element bound to the C2PA manifest namespace. General
+SVG metadata, RDF, scripts, styles, and drawing elements are not removed.
+
+JPEG XL codestream-only files are recognized and scanned, but cannot contain
+embedded EXIF or C2PA box metadata. Container-based JPEG XL files support
+uncompressed and Brotli-wrapped EXIF boxes; C2PA is recognized in its dedicated
+top-level JUMBF box. HEIF/HEIC and AVIF processing is implemented directly over
+their ISO-BMFF structures and does not require an installed Windows image codec.
 
 ## Usage
 
@@ -69,7 +86,8 @@ the input list. Results can be sorted by clicking a column header; EXIF and
 C2PA/JUMBF sorting shows detected metadata first on the initial click. Sorting
 is temporarily suspended while an operation is running and is applied once
 when the operation finishes, avoiding unnecessary redraws. Hover over a
-truncated path in the metadata panel to see the complete path in a tooltip.
+truncated file name in the results table, or a truncated path in the metadata
+panel, to see the complete path in a tooltip.
 When EXIF or C2PA/JUMBF metadata is detected, hover over its blue label to see
 the details tooltip, then click the label to open a scrollable dialog containing
 the complete file path and every available parsed metadata detail.
@@ -154,7 +172,7 @@ imclean remove-c2pa "C:\Photos" -r --dry-run
 Remove both metadata categories from several files and save a log:
 
 ```bat
-imclean remove-all a.jpg b.png c.webp d.tif --backup --log cleanup.log
+imclean remove-all a.jpg b.png c.webp d.tif e.gif f.svg g.heic h.avif i.dng j.jxl --backup --log cleanup.log
 ```
 
 Process a file whose name begins with a dash:
@@ -178,9 +196,11 @@ then `filename.ext.bak.1`, `filename.ext.bak.2`, and so on.
 ## Safety and file integrity
 
 IMClean edits supported metadata structures directly and does not decode or
-re-encode image pixels. New content is written to a temporary file in the same
-folder and then installed using Windows atomic replacement facilities. Temporary
-files are cleaned up after failures whenever possible.
+recompress image pixels. SVG text is decoded only in memory and written back
+using the same supported character encoding. New content is written to a
+temporary file in the same folder and then installed using Windows atomic
+replacement facilities. Temporary files are cleaned up after failures whenever
+possible.
 
 Before replacing an image, IMClean checks the file identity, size, and last-write
 time again. If another process has modified or replaced the file since it was
@@ -199,6 +219,22 @@ cannot be guaranteed, the file is left unchanged and an error is reported.
 - BigTIFF is not supported. Classic TIFF metadata is removed without moving or
   re-encoding pixel data; detached payloads are cleared only when they do not
   overlap pixels, IFD structures, or still-referenced data.
+- GIF does not define native EXIF storage. IMClean handles embedded C2PA data in
+  the standardized GIF Application Extension and leaves comments, animation
+  control blocks, application data, and image frames unchanged.
+- SVG does not define native EXIF storage. C2PA removal targets only the
+  standardized namespaced `c2pa:manifest` element. SVG encodings other than
+  UTF-8 and UTF-16 are not supported.
+- DNG support covers classic TIFF-based DNG files. BigTIFF-based variants are
+  not supported.
+- HEIF/HEIC and AVIF EXIF removal supports items whose `iloc` construction
+  method uses absolute file offsets. EXIF stored through `idat`, external data
+  references, or unsupported item-location variants is left unchanged.
+- JPEG XL C2PA handling targets the standard uncompressed top-level `jumb`
+  manifest box. A naked JPEG XL codestream cannot contain such metadata.
+- The GUI preview depends on codecs available through Windows Imaging
+  Component. A file can still be scanned and cleaned when no preview codec is
+  installed.
 - C2PA manifests may be remote or externally referenced. IMClean handles only
   embedded metadata in the supported containers. It does not validate digital
   signatures and does not download remote manifests.
@@ -215,6 +251,9 @@ copy whenever authenticity or chain-of-custody information may be important.
 - The release binaries require no external runtime libraries.
 
 ## Release verification
+
+See [`CHANGELOG.MD`](CHANGELOG.MD) for the improvements and fixes included in
+each published version.
 
 Published releases include `SHA256SUMS.txt`. Verify a downloaded executable
 with PowerShell before running it:
