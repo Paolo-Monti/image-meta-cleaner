@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:c2pa="http://c2pa.org/manifest" width="1" height="1">
+  <title>Preserve this title</title>
+  <metadata><custom:note xmlns:custom="urn:imclean:test">keep</custom:note><c2pa:manifest>SlACEQAAAAEAAAAganVtYgAAABhqdW1kYzJwYQARABCAAACqADibcQ==</c2pa:manifest></metadata>
+  <script><![CDATA[var marker = "<c2pa:manifest>";]]></script>
+  <rect width="1" height="1" fill="red"/>
+</svg>
